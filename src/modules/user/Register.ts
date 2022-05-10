@@ -7,15 +7,19 @@ import { RegisterInput } from "./register/RegisterInput";
 @Resolver(User)
 export class RegisterResolver {
   
-  @Query(() => String, { nullable: true }) 
+  @Query(() => String) 
   async hello() {
     return "Hello world!";
   }
 
-  @Mutation(() => String)
-  async register(
-      @Arg('input') {email, firstName, lastName, password}: RegisterInput,
-  ): Promise<User> {
+  @Mutation(() => User)
+  async register(@Arg('input') 
+  {
+    email, 
+    firstName, 
+    lastName, 
+    password
+  }: RegisterInput): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await User.create({
@@ -28,4 +32,4 @@ export class RegisterResolver {
     return user;
   }
 
-}
+}  
