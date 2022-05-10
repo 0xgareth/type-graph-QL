@@ -22,10 +22,12 @@ const main = async () => {
 
     const app = Express();
 
+    await apolloServer.start();
+
     apolloServer.applyMiddleware({ app });
 
     app.listen(4000, () => {
-        console.log('server started on http://localhost:4000')
+        console.log('server started on http://localhost:4000/graphql')
     });
 
 }

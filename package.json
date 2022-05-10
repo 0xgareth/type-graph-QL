@@ -8,7 +8,7 @@
   "dependencies": {
     "apollo-server-express": "^3.7.0",
     "express": "^4.18.1",
-    "graphql": "^16.4.0",
+    "graphql": "^15.7.2",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1"
   },
@@ -20,7 +20,7 @@
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
   },
-  "scripts" : {
+  "scripts": {
     "start": "ts-node src/index.ts"
   }
 }
