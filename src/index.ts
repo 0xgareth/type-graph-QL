@@ -6,7 +6,7 @@ import "reflect-metadata";
 @Resolver()
 class HelloResolver {
   
-  @Query(() => String) 
+  @Query(() => String, { nullable: true,  }) 
   async hello() {
     return "Hello world!";
   }
