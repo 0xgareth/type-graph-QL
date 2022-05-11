@@ -10,6 +10,7 @@ import cors from "cors";
 import { redis } from "./redis";
 import { RegisterResolver } from "./modules/user/Register";
 import { LoginResolver } from "./modules/user/Login";
+import { MeResolver } from "./modules/user/Me";
 
 declare module 'express-session' {
   interface SessionData {
@@ -21,12 +22,12 @@ const main = async () => {
     await createConnection();
 
     const schema = await buildSchema({
-        resolvers: [RegisterResolver, LoginResolver],
+        resolvers: [MeResolver, RegisterResolver, LoginResolver],
     });
 
     const apolloServer = new ApolloServer({ 
         schema,
-        context: ({ req }: any) => ({ req })
+        context: ({ req }: any) => ({ req }),
     });
 
     const app = Express();
@@ -36,16 +37,16 @@ const main = async () => {
     app.use(
         cors({
           credentials: true,
-          // origin: "http://localhost:3000" // causes type error in graph QL
+          origin: "https://studio.apollographql.com"
         })
       );
 
     app.use(
         session({
           store: new RedisStore({
-            client: redis
+            client: redis as any
           }),
-          name: "qid",
+          name: "qid"
           secret: "aslkdfjoiq12312",
           resave: false,
           saveUninitialized: false,
@@ -59,7 +60,7 @@ const main = async () => {
 
     await apolloServer.start();
 
-    apolloServer.applyMiddleware({ app });
+    apolloServer.applyMiddleware({ app, cors: false });
 
     app.listen(4000, () => {
         console.log('server started on http://localhost:4000/graphql')
