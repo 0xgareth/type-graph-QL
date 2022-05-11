@@ -29,7 +29,7 @@ export class RegisterResolver {
       email,
       password: hashedPassword
     }).save();
-
+    
     console.log(ctx.req.session)
 
     return user;
