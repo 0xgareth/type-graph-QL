@@ -20,7 +20,7 @@ const main = async () => {
     });
 
     const apolloServer = new ApolloServer({ 
-        schema, 
+        schema,
         context: ({ req }: any) => ({ req })
     });
 
@@ -31,7 +31,7 @@ const main = async () => {
     app.use(
         cors({
           credentials: true,
-        //   origin: "http://localhost:4000" // causes type error in graph QL
+          // origin: "http://localhost:3000" // causes type error in graph QL
         })
       );
 

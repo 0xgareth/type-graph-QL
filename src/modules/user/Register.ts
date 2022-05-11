@@ -1,8 +1,9 @@
-import { Resolver, Query, Mutation, Arg } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, Ctx } from "type-graphql";
 import bcrypt from 'bcryptjs';
 
 import { User } from "../../entity/User";
 import { RegisterInput } from "./register/RegisterInput";
+import { MyContext } from "../../types/MyContext";
 
 @Resolver(User)
 export class RegisterResolver {
@@ -19,7 +20,7 @@ export class RegisterResolver {
     firstName, 
     lastName, 
     password
-  }: RegisterInput): Promise<User> {
+  }: RegisterInput, @Ctx() ctx: MyContext): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await User.create({
@@ -28,6 +29,8 @@ export class RegisterResolver {
       email,
       password: hashedPassword
     }).save();
+
+    console.log(ctx.req.session)
 
     return user;
   }
