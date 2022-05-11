@@ -10,6 +10,8 @@ import cors from "cors";
 import { redis } from "./redis";
 import { RegisterResolver } from "./modules/user/Register";
 
+//test
+
 const main = async () => {
     await createConnection();
 
