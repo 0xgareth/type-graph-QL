@@ -23,6 +23,11 @@ const main = async () => {
 
     const schema = await buildSchema({
         resolvers: [MeResolver, RegisterResolver, LoginResolver],
+        authChecker: ({ context: {req} }) => {
+          console.log('auth checker');
+          console.log(req.session.userId);
+          return !!req.session.userId;
+        }
     });
 
     const apolloServer = new ApolloServer({ 
@@ -49,18 +54,23 @@ const main = async () => {
           name: "qid",
           secret: "aslkdfjoiq12312",
           resave: false,
-          saveUninitialized: false,
+          saveUninitialized: true,
           cookie: {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 1000 * 60 * 60 * 24 * 7 * 365 // 7 years
+            // secure: process.env.NODE_ENV === "production",
+            secure: true,
+            maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
+            sameSite: 'none'
           }
         })
       );
 
     await apolloServer.start();
 
-    apolloServer.applyMiddleware({ app, cors: false });
+    apolloServer.applyMiddleware({ 
+      app, 
+      cors: {credentials: true, origin: "https://studio.apollographql.com"}
+    });
 
     app.listen(4000, () => {
         console.log('server started on http://localhost:4000/graphql')
