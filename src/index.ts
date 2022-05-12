@@ -57,7 +57,6 @@ const main = async () => {
           saveUninitialized: true,
           cookie: {
             httpOnly: true,
-            // secure: process.env.NODE_ENV === "production",
             secure: true,
             maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
             sameSite: 'none'
@@ -65,11 +64,13 @@ const main = async () => {
         })
       );
 
+    app.set('trust proxy', true)
+
     await apolloServer.start();
 
     apolloServer.applyMiddleware({ 
       app, 
-      cors: {credentials: true, origin: "https://studio.apollographql.com"}
+      cors: false
     });
 
     app.listen(4000, () => {
